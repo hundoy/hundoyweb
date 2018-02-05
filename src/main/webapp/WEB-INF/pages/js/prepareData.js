@@ -1,12 +1,17 @@
 var width = 960,
     height = 500
 
+var img_w = 80;
+var img_h = 80;
+var radius = 30;
+
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
 var force = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().strength(-1000).distanceMin(100).distanceMax(1000))
+    .force("charge", d3.forceManyBody().distanceMin(100).distanceMax(1000).strength(-1000))
+    // .force("charge", d3.forceManyBody().strength(-1000).distanceMin(100).distanceMax(1000))
     .force("link", d3.forceLink().id(function(d) { return d.index }))
     .force("center", d3.forceCenter(width / 2, height / 2))
     .force("y", d3.forceY(0.001))
@@ -40,7 +45,13 @@ function dragended(d) {
 
 d3.json("friends.json", function (error, json) {
     if (error) throw error;
-    force.nodes(json.nodes).force("link").links(json.links)
+    // force.nodes(json.nodes).force("link").links(json.links);
+    force.nodes(json.nodes)
+        .force("link", d3.forceLink()
+            .links(json.links)
+            .id(function(d) {return d.index})
+            .distance(function(d){return d.strength*10}));
+
 
     var link = svg.selectAll(".link")
         .data(json.links)
@@ -48,7 +59,7 @@ d3.json("friends.json", function (error, json) {
         .append("line")
         .attr("class", "link");
 
-    var node = svg.selectAll(".node")
+    var ori_node = svg.selectAll(".node")
         .data(json.nodes)
         .enter().append("g")
         .attr("class", "node")
@@ -57,19 +68,65 @@ d3.json("friends.json", function (error, json) {
             .on("drag", dragged)
             .on("end", dragended));
 
-    node.append('circle')
-        .attr('r', 20)
-        .attr('fill', function (d) {
-            return color(d.group);
-        });
+    var arr = ["coffee1.jpg", "dog2.jpg", "quin.jpg", "dog3.jpg"]
 
-    node.append("text")
+    var node = svg.selectAll("image")
+        .data(json.nodes)
+        .enter().append("circle")
+        .attr("class", "circleImg")
+        .attr("r", radius)
+        .attr("fill", function(d, i){
+            var img_i = Math.floor(Math.random()*4);
+
+            // create img
+            var defs = svg.append("defs").attr("id", "imgdefs")
+            var catpattern = defs.append("pattern")
+                .attr("id", "catpattern"+i)
+                .attr("height", 1)
+                .attr("width", 1)
+            catpattern.append("image")
+                .attr("x", - (img_w / 2 - radius))
+                .attr("y", - (img_h / 2 - radius))
+                .attr("width", img_w)
+                .attr("height", img_h)
+                .attr("xlink:href", "image/"+arr[img_i])
+
+            return "url(#catpattern" + i + ")";
+        })
+        .attr("class", "node")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+
+
+    // node.append('circle')
+    //     .attr('r', 20)
+    //     .attr('fill', function (d) {
+    //         return color(d.group);
+    //     });
+
+    // node.append("text")
+    //     .attr("dx", -18)
+    //     .attr("dy", 28)
+    //     .style("font-family", "overwatch")
+    //     .style("font-size", "18px")
+    //
+    //     .text(function (d) {
+    //         return d.name
+    //     });
+
+    var nodes_text = svg.selectAll(".nodetext")
+        .data(json.nodes)
+        .enter()
+        .append("text")
+        .attr("class", "nodetext")
         .attr("dx", -18)
-        .attr("dy", 28)
+        .attr("dy", 38)
         .style("font-family", "overwatch")
         .style("font-size", "18px")
-
-        .text(function (d) {
+        .text(function(d){
             return d.name
         });
 
@@ -89,6 +146,9 @@ d3.json("friends.json", function (error, json) {
         node.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
+
+        nodes_text.attr("x", function(d){ return d.x});
+        nodes_text.attr("y", function(d){ return d.y});
     });
 });
 
