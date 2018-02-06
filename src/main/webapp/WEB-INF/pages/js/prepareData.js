@@ -50,7 +50,9 @@ d3.json("friends.json", function (error, json) {
         .force("link", d3.forceLink()
             .links(json.links)
             .id(function(d) {return d.index})
-            .distance(function(d){return d.strength*10}));
+            .strength(function(d){
+                return d["strengthd"];
+            }));
 
 
     var link = svg.selectAll(".link")
@@ -98,24 +100,6 @@ d3.json("friends.json", function (error, json) {
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
-
-
-
-    // node.append('circle')
-    //     .attr('r', 20)
-    //     .attr('fill', function (d) {
-    //         return color(d.group);
-    //     });
-
-    // node.append("text")
-    //     .attr("dx", -18)
-    //     .attr("dy", 28)
-    //     .style("font-family", "overwatch")
-    //     .style("font-size", "18px")
-    //
-    //     .text(function (d) {
-    //         return d.name
-    //     });
 
     var nodes_text = svg.selectAll(".nodetext")
         .data(json.nodes)

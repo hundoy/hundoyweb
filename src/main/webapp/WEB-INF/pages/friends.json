@@ -36,66 +36,66 @@
   "links": [{
     "source": 0,
     "target": 1,
-    "strength": 4
+    "strengthd": 0.4
   },{
     "source": 0,
     "target": 2,
-    "strength": 7
+    "strengthd": 0.7
   },{
     "source": 0,
     "target": 3,
-    "strength": 10
+    "strengthd": 0.1
   },{
     "source": 0,
     "target": 4,
-    "strength": 2
+    "strengthd": 0.2
   },{
     "source": 1,
     "target": 2,
-    "strength": 6
+    "strengthd": 0.6
   },{
     "source": 1,
     "target": 3,
-    "strength": 34
+    "strengthd": 1.0
   },{
     "source": 1,
     "target": 4,
-    "strength": 4
+    "strengthd": 0.4
   },{
     "source": 2,
     "target": 3,
-    "strength": 30
+    "strengthd": 1.0
   },{
     "source": 2,
     "target": 4,
-    "strength": 12
+    "strengthd": 1.0
   },{
     "source": 0,
     "target": 5,
-    "strength": 4
+    "strengthd": 0.1
   },{
     "source": 5,
     "target": 6,
-    "strength": 2
+    "strengthd": 0.2
   },{
     "source": 5,
     "target": 7,
-    "strength": 11
+    "strengthd": 0.8
   },{
     "source": 0,
     "target": 8,
-    "strength": 13
+    "strengthd": 0.9
   },{
     "source": 0,
     "target": 9,
-    "strength": 10
+    "strengthd": 1.0
   },{
     "source": 0,
     "target": 10,
-    "strength": 8
+    "strengthd": 0.8
   },{
     "source": 8,
     "target": 7,
-    "strength": 6
+    "strengthd": 0.6
   }]
 }
