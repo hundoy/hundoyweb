@@ -1,5 +1,17 @@
-var width = 960,
-    height = 500
+$.ajax({
+    // dataType: 'json',
+    url: '/api/getScoreData',
+    type: 'get',
+    // data: {"productId": selected},
+    success: function (json) {
+        // var res = JSON.parse(json);
+        alert(json);
+    }
+});
+
+
+var width = 1280,
+    height = 800
 
 var img_w = 80;
 var img_h = 80;

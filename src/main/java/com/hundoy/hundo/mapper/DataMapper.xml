@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hundoy.hundo.mapper.DataMapper" >
+  <select id="getAllUids" resultType="java.util.HashMap">
+    select DISTINCT uid from
+    (
+      select node1 as uid from links
+      UNION ALL
+      select node2 as uid from links
+    ) tmp
+  </select>
+
+    <select id="getScoreData" resultType="java.util.HashMap">
+        select
+        node1, node2, u1.nick_name as name1, u2.nick_name as name2, score
+        from links l
+        left join kuser u1 on l.node1=u1.uid
+        left join kuser u2 on l.node2=u2.uid
+    </select>
+</mapper>
