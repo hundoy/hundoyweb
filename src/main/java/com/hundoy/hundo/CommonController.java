@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/api")
@@ -59,12 +60,50 @@ public class CommonController
     @ResponseBody
     public String getScoreData()
     {
-        List<Map<String,Object>> uidList = dataMapper.getScoreData();
-        JSONArray arr = new JSONArray();
-        for (Map<String,Object> uidMap : uidList){
-            JSONObject data = JSONObject.parseObject(JSON.toJSONString(uidMap));
-            arr.add(data);
+        List<Map<String,Object>> scoreDatas = dataMapper.getScoreData();
+        JSONObject nodeMap = new JSONObject();
+        JSONArray nodes = new JSONArray();
+        JSONArray links = new JSONArray();
+        for (Map<String,Object> scoreData : scoreDatas){
+            String node1 = String.valueOf(scoreData.get("node1"));
+            String node2 = String.valueOf(scoreData.get("node2"));
+            String name1 = (String)scoreData.get("name1");
+            String name2 = (String)scoreData.get("name2");
+            long score = (Long)scoreData.get("score");
+            double strengthd = 0.01385 * score - 0.1077;
+
+            if (!nodeMap.containsKey(node1)){
+                addNode(nodeMap, node1, name1);
+                nodes.add(nodeMap.getJSONObject(node1));
+            }
+
+            if (!nodeMap.containsKey(node2)){
+                addNode(nodeMap, node2, name2);
+                nodes.add(nodeMap.getJSONObject(node2));
+            }
+
+            int sourceIndex = nodes.indexOf(nodeMap.getJSONObject(node1));
+            int targetIndex = nodes.indexOf(nodeMap.getJSONObject(node2));
+
+            JSONObject link = new JSONObject();
+            link.put("source", sourceIndex);
+            link.put("target", targetIndex);
+            link.put("strengthd", strengthd);
+
+            links.add(link);
         }
-        return arr.toJSONString();
+
+        JSONObject data = new JSONObject();
+        data.put("nodes", nodes);
+        data.put("links", links);
+
+        return data.toJSONString();
+    }
+
+    private void addNode(JSONObject nodes, String node1, String name1) {
+        JSONObject node = new JSONObject();
+        node.put("name", name1);
+        node.put("id", node1);
+        nodes.put(node1, node);
     }
 }

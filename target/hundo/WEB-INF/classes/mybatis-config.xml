@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 配置这个不用在xml中写数据表的明细对应关系 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 让mybatis使用log4j2打印sql日志 -->
+		<!-- 以下配置可以让mybatis打印出执行过程中的sql语句，但是支持mybatis的版本为3.2.8 -->
+		<!-- 线上关闭这个功能 ,在本地开发的时候可以打开-->
+		<setting name="logPrefix" value="dao"/>
+	</settings>
+</configuration>
