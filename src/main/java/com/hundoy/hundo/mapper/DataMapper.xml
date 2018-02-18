@@ -16,7 +16,58 @@
         from links l
         join kuser u1 on l.node1=u1.uid
         join kuser u2 on l.node2=u2.uid
-        where score>=15
+        where score>=#{minScore} and u1.nick_name is not null and u2.nick_name is not null
         order by score desc
+    </select>
+
+    <select id="getPieSum" resultType="java.util.HashMap">
+        select
+        sum(case wbtype when 'comment' then 1 else 0 end) as c_cnt,
+        sum(case wbtype when 'repost' then 1 else 0 end) as r_cnt,
+        sum(case wbtype when 'like' then 1 else 0 end) as l_cnt
+        from wb_detail d
+        join wb w on d.wbid=w.wbid
+        where w.uid=#{uid} and d.uid<![CDATA[ <> ]]>w.uid;
+    </select>
+
+    <select id="getTypeCnt" resultType="java.util.HashMap">
+        select tmp.uid, coalesce(u.nick_name,cast(tmp.uid as varchar)) as nick_name, cnt
+        from(
+        select
+        d.uid, count(1) as cnt
+        from wb_detail d
+        join wb w on d.wbid=w.wbid
+        where w.uid=#{uid} and wbtype=#{wbtype} and d.uid<![CDATA[ <> ]]>w.uid
+        group by d.uid
+        ) tmp
+        left join kuser u on tmp.uid=u.uid
+        order by cnt desc
+        limit 9
+        ;
+    </select>
+
+    <select id="getTotalScore" resultType="java.util.HashMap">
+        select tmp.uid, coalesce(u.nick_name,cast(tmp.uid as varchar)) as nick_name, score
+        from(
+        select
+        d.uid,
+        sum(case wbtype when 'comment' then 5 when 'repost' then 5 when 'reply' then 10 else 1 end) as score
+        from wb_detail d
+        join wb w on d.wbid=w.wbid
+        where w.uid=#{uid} and d.uid<![CDATA[ <> ]]>w.uid
+        group by d.uid
+        ) tmp
+        left join kuser u on tmp.uid=u.uid
+        order by score desc
+        limit 10
+        ;
+    </select>
+
+    <select id="getKuser" resultType="java.util.HashMap">
+        select uid, nick_name from kuser where uid=#{uid}
+    </select>
+
+    <select id="getConfig" resultType="java.lang.String">
+        select kvalue from kconfig where kname=#{kname} limit 1;
     </select>
 </mapper>

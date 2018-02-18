@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/d3/d3.min.js"></script>
-    <title>relation graphics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>4 roots' force directed graph</title>
 
     <style>
         .link {
@@ -22,6 +23,59 @@
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="tab-slider--nav">
+            <ul class="tab-slider--tabs">
+                <!--<li class="tab-slider&#45;&#45;trigger active" rel="tab1">Tab 1</li>-->
+                <!--<li class="tab-slider&#45;&#45;trigger" rel="tab2">Tall</li>-->
+                <!--<li class="tab-slider&#45;&#45;trigger" rel="tab3">Grande</li>-->
+                <!--<li class="tab-slider&#45;&#45;trigger" rel="tab4">Venti</li>-->
+                <!--<li class="tab-slider&#45;&#45;trigger" rel="tab5">Trenta</li>-->
+                <li class="tab-slider--trigger active" rel="tab1">Short</li>
+                <li class="tab-slider--trigger" rel="tab2">Tall</li>
+                <li class="tab-slider--trigger" rel="tab3">Grande</li>
+                <li class="tab-slider--trigger" rel="tab4">Venti</li>
+                <li class="tab-slider--trigger" rel="tab5">Trenta</li>
+            </ul>
+        </div>
+        <div class="tab-slider--container">
+            <div id="tab1" class="tab-slider--body">
+                <h2 style="margin: 5px;font-size:16px">● 点击上方标签，切换显示数量</h2>
+                <h2 style="margin: 5px;font-size:16px">● 头像可以拖拽</h2>
+                <h2 style="margin: 5px;font-size:16px">● 点击头像下方的名字，查看个人数据</h2>
+                <a href="readme.html" target="view_window" style="color:#B1B1B1;text-decoration:none;font-size:14px;">[?]一些说明，请您看看</a>
+            </div>
+            <div id="tab2" class="tab-slider--body">
+                <h2 style="margin: 5px;font-size:16px">● 点击上方标签，切换显示数量</h2>
+                <h2 style="margin: 5px;font-size:16px">● 头像可以拖拽</h2>
+                <h2 style="margin: 5px;font-size:16px">● 点击头像下方的名字，查看个人数据</h2>
+                <a href="readme.html" target="view_window" style="color:#B1B1B1;text-decoration:none;font-size:14px;">[?]一些说明，请您看看</a>
+            </div>
+            <div id="tab3" class="tab-slider--body">
+                <h2 style="margin: 5px;font-size:16px">● 点击上方标签，切换显示数量</h2>
+                <h2 style="margin: 5px;font-size:16px">● 头像可以拖拽</h2>
+                <h2 style="margin: 5px;font-size:16px">● 点击头像下方的名字，查看个人数据</h2>
+                <a href="readme.html" target="view_window" style="color:#B1B1B1;text-decoration:none;font-size:14px;">[?]一些说明，请您看看</a>
+            </div>
+            <div id="tab4" class="tab-slider--body">
+                <h2 style="margin: 5px;font-size:16px">● 点击上方标签，切换显示数量</h2>
+                <h2 style="margin: 5px;font-size:16px">● 头像可以拖拽</h2>
+                <h2 style="margin: 5px;font-size:16px">● 点击头像下方的名字，查看个人数据</h2>
+                <a href="readme.html" target="view_window" style="color:#B1B1B1;text-decoration:none;font-size:14px;">[?]一些说明，请您看看</a>
+            </div>
+            <div id="tab5" class="tab-slider--body">
+                <h2 style="margin: 5px;font-size:16px">● 点击上方标签，切换显示数量</h2>
+                <h2 style="margin: 5px;font-size:16px">● 头像可以拖拽</h2>
+                <h2 style="margin: 5px;font-size:16px">● 点击头像下方的名字，查看个人数据</h2>
+                <a href="readme.html" target="view_window" style="color:#B1B1B1;text-decoration:none;font-size:14px;">[?]一些说明，请您看看</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="main" style="width:1800px;height:900px;border-style: solid;border-width: 1px;margin: auto auto 3rem auto;"></div>
+
+    <!--<script src="js/index.js"></script>-->
+
     <script type="text/javascript" src="js/prepareData.js"></script>
 </body>
 </html>

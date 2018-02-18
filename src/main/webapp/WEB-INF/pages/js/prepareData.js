@@ -1,21 +1,38 @@
-var width = 1600,
-    height = 800
+var level = 1;
 
-var img_w = 64;
-var img_h = 64;
-var radius = 30;
+$("document").ready(function(){
+    $(".tab-slider--body").hide();
+    $(".tab-slider--body:first").show();
+});
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+$(".tab-slider--nav li").click(function() {
+    $(".tab-slider--body").hide();
+    var activeTab = $(this).attr("rel");
+    var tabName = $(this).attr("rel");
+    var curLevel = parseInt(tabName.substr(3,1));
+    if (level!=curLevel){
+        level = curLevel;
+        $("#"+activeTab).fadeIn();
+        $('.tab-slider--tabs').removeClass('slide2');
+        $('.tab-slider--tabs').removeClass('slide3');
+        $('.tab-slider--tabs').removeClass('slide4');
+        $('.tab-slider--tabs').removeClass('slide5');
+        if (level>1){
+            $('.tab-slider--tabs').addClass('slide'+level);
+        }
+        updateLevel(level);
+    }
+    $(".tab-slider--nav li").removeClass("active");
+    $(this).addClass("active");
+});
 
-var force = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().distanceMin(10).distanceMax(700).strength(-1000))
-    // .force("charge", d3.forceManyBody().strength(-1000).distanceMin(100).distanceMax(1000))
-    .force("link", d3.forceLink().id(function(d) { return d.index }))
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("y", d3.forceY(0.001))
-    .force("x", d3.forceX(0.001));
+
+var width = 1850,
+    height = 900
+
+var img_w = 48;
+var img_h = 48;
+var radius = 20;
 
 // var color = function (group) {
 //     if (group == 1) {
@@ -55,7 +72,27 @@ function calTrueLength(str){
     return blen;
 }
 
+var svg = null;
+var force = null;
 function update(json){
+    // d3.select("#main").remove("svg");
+
+    if (svg!=null){
+        svg.selectAll("*").remove();
+    } else {
+        svg = d3.select("#main").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    }
+
+    force = d3.forceSimulation()
+        .force("charge", d3.forceManyBody().distanceMin(10).distanceMax(700).strength(-1000))
+        // .force("charge", d3.forceManyBody().strength(-1000).distanceMin(100).distanceMax(1000))
+        .force("link", d3.forceLink().id(function(d) { return d.index }))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("y", d3.forceY(0.001))
+        .force("x", d3.forceX(0.001));
+
     // force.nodes(json.nodes).force("link").links(json.links);
     force.nodes(json.nodes)
         .force("link", d3.forceLink()
@@ -117,6 +154,11 @@ function update(json){
     var nodes_text = svg.selectAll(".nodetext")
         .data(json.nodes)
         .enter()
+        .append("a")
+        .attr("xlink:href", function(d){
+            return "display_detail.html?uid="+d.id;
+        })
+        .attr("target", "view_window")
         .append("text")
         .attr("class", "nodetext")
         .attr("dx", function(d){
@@ -126,8 +168,9 @@ function update(json){
         .style("font-family", "overwatch")
         .style("font-size", font_size+"px")
         .text(function(d){
-            return d.name
+            return d.name;
         });
+
 
     force.on("tick", function () {
         link.attr("x1", function (d) {
@@ -148,22 +191,24 @@ function update(json){
 
         nodes_text.attr("x", function(d){ return d.x});
         nodes_text.attr("y", function(d){ return d.y});
+
+        // nodes_a.attr("x", function(d){ return d.x});
+        // nodes_a.attr("y", function(d){ return d.y});
     });
 }
 
-$.ajax({
-    // dataType: 'json',
-    url: '/api/getScoreData',
-    type: 'get',
-    // data: {"productId": selected},
-    success: function (json) {
-        var res = JSON.parse(json);
-        update(res);
-    }
-});
+function updateLevel(lv){
+    $.ajax({
+        // dataType: 'json',
+        url: '/api/getScoreData?level='+(lv-1),
+        type: 'get',
+        // data: {"productId": selected},
+        success: function (json) {
+            var res = JSON.parse(json);
+            update(res);
+        }
+    });
+}
 
-// d3.json("friends.json", function (error, json) {
-//     if (error) throw error;
-//     update(json);
-// });
+updateLevel(level);
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/d3/d3.min.js"></script>
+    <title>no data</title>
+
+    <style>
+        .link {
+            stroke: #ccc;
+        }
+
+        .node text {
+            pointer-events: none;
+            font: 10px sans-serif;
+        }
+
+        @font-face {
+            font-family: 'overwatch';
+        }
+    </style>
+</head>
+<body>
+<h2>抱歉，这位朋友的数据我没有统计~</h2>
+<p>你可以去他的新浪微博主页<a id="wba" href="#">？？？</a>看看他是谁（需要登录）</p>
+
+<script language="javascript">
+    var params = window.location.search;
+    var url = "http://m.weibo.cn/u/"+params.substr(5);
+    $("#wba").text(url);
+    $("#wba").attr("href", url);
+</script>
+</body>
+</html>

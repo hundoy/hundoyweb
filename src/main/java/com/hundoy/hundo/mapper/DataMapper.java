@@ -1,5 +1,6 @@
 package com.hundoy.hundo.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +16,10 @@ public interface DataMapper {
 //										 @Param("orgAccount") String orgAccount);
 	List<Map<String,Long>> getAllUids();
 
-    List<Map<String,Object>> getScoreData();
+    List<Map<String,Object>> getScoreData(@Param("minScore") Long minScore);
+    List<Map<String,Object>> getPieSum(@Param("uid") Long uid);
+    List<Map<String,Object>> getTypeCnt(@Param("uid") Long uid, @Param("wbtype") String wbtype);
+    List<Map<String,Object>> getTotalScore(@Param("uid") Long uid);
+    List<Map<String,Object>> getKuser(@Param("uid") Long uid);
+    String getConfig(@Param("kname") String kname);
 }
