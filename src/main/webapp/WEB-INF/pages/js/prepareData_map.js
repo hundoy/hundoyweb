@@ -420,28 +420,82 @@ var geoCoordMap = {
     '大庆':[125.03,46.58]
 };
 
-$.get('data/weibo.json', function (weiboData) {
+var taiwanCitys = ["宜兰县","云林县","桃园市","台南市","新北市","屏东县","台中市","彰化县","台北市"];
+var taiwanGeo = [121.5295711,23.32575407,122.4406848,24.37093839];
+var offsetx = -0.1;
+var offsety = -0.1;
+$.get('data/access_data.json', function (weiboData) {
     myChart.hideLoading();
 
-    weiboData = weiboData.map(function (serieData, idx) {
-        var px = serieData[0] / 1000;
-        var py = serieData[1] / 1000;
-        var res = [[px, py]];
+    var pvData = weiboData[0];
+    var uvData = weiboData[1];
 
-        for (var i = 2; i < serieData.length; i += 2) {
-            var dx = serieData[i] / 1000;
-            var dy = serieData[i + 1] / 1000;
-            var x = px + dx;
-            var y = py + dy;
-            res.push([x.toFixed(2), y.toFixed(2), 1]);
+    var max_r = 1.3;
+    var max_ang = 2*Math.PI;
+    var i=0;
+    var res = [[[73.96,39.70]], [[75.06,38.45]], [[75.23,37.78]]];
+    var pvDict = {};
+    for (i=0; i<pvData.length; i++){
+        pvDict[pvData[i].city] = parseInt(pvData[i].value);
+    }
 
-            px = x;
-            py = y;
+    for (i=0; i<uvData.length; i++){
+        var city = uvData[i].city;
+        var cnt = parseInt(uvData[i].value);
+
+        if (taiwanCitys.indexOf(city)>=0){
+            var ind = Math.floor(Math.random()*3);
+            var geox = Math.random()*(taiwanGeo[2]-taiwanGeo[0])+taiwanGeo[0]+offsetx;
+            var geoy = Math.random()*(taiwanGeo[3]-taiwanGeo[1])+taiwanGeo[1]+offsety;
+            res[ind].push([geox.toFixed(2),geoy.toFixed(2),1]);
+        } else {
+            var geo = geoCoordMap[city];
+            if (geo){
+                var j=0;
+                for (j=0;j<cnt;j++){
+                    var r = Math.random()*max_r;
+                    var ang = Math.random()*max_ang;
+                    var geox = geo[0] + r*Math.cos(ang)+offsetx;
+                    var geoy = geo[1] + r*Math.sin(ang)+offsety;
+
+                    var ind = Math.floor(Math.random()*3);
+                    // var pv = pvDict[city];
+                    // var ind = 0;
+                    // if (pv>=100){
+                    //     ind = 2;
+                    // } else{
+                    //     if (pv>=10){
+                    //         ind = 1;
+                    //     }
+                    // }
+
+                    res[ind].push([geox.toFixed(2),geoy.toFixed(2),1]);
+                }
+            }
         }
-        return res;
-    });
+    }
+    weiboData = res;
 
-    weiboData = [[[73.96,39.70,1]], [[75.06,38.45,1]], [[75.23,37.78,1],[0.747,1.682,1],[0.044,0.068,1],[0,-0.068,1]]];
+    // weiboData = weiboData.map(function (serieData, idx) {
+    //     var px = serieData[0] / 1000;
+    //     var py = serieData[1] / 1000;
+    //     var res = [[px, py]];
+    //
+    //     for (var i = 2; i < serieData.length; i += 2) {
+    //         var dx = serieData[i] / 1000;
+    //         var dy = serieData[i + 1] / 1000;
+    //         var x = px + dx;
+    //         var y = py + dy;
+    //         res.push([x.toFixed(2), y.toFixed(2), 1]);
+    //
+    //         px = x;
+    //         py = y;
+    //     }
+    //     return res;
+    // });
+
+    // [116.46,39.92]
+    // weiboData = [[[73.96,39.70]], [[75.06,38.45]], [[75.23,37.78],[116.46,39.95,1],[116.42,39.92,1],[116.49,39.99,1],[115.49,39.98,1],[117.49,39.98,1]]];
     var option = {
         // backgroundColor: '#404a59',
         title : {
@@ -484,7 +538,7 @@ $.get('data/weibo.json', function (weiboData) {
             name: '弱',
             type: 'scatter',
             coordinateSystem: 'geo',
-            symbolSize: 1,
+            symbolSize: 2,
             large: true,
             itemStyle: {
                 normal: {
@@ -498,7 +552,7 @@ $.get('data/weibo.json', function (weiboData) {
             name: '中',
             type: 'scatter',
             coordinateSystem: 'geo',
-            symbolSize: 1,
+            symbolSize: 3,
             large: true,
             itemStyle: {
                 normal: {
@@ -512,7 +566,7 @@ $.get('data/weibo.json', function (weiboData) {
             name: '强',
             type: 'scatter',
             coordinateSystem: 'geo',
-            symbolSize: 1,
+            symbolSize: 3,
             large: true,
             itemStyle: {
                 normal: {
