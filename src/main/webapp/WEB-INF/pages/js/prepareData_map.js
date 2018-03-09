@@ -424,8 +424,8 @@ var taiwanCitys = ["宜兰县","云林县","桃园市","台南市","新北市","
 var taiwanGeo = [121.5295711,23.32575407,122.4406848,24.37093839];
 var offsetx = -0.1;
 var offsety = -0.1;
+myChart.hideLoading();
 $.get('data/access_data.json', function (weiboData) {
-    myChart.hideLoading();
 
     var pvData = weiboData[0];
     var uvData = weiboData[1];
