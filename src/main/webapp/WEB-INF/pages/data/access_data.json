@@ -1,5 +1,4 @@
 [
-
 [
   {"value":"677","city":"上海"},
   {"value":"346","city":"北京"},
@@ -671,5 +670,34 @@
     {"value":"2","province":"澳门"},
     {"value":"1","province":"广西"},
     {"value":"1","province":"西藏"}]
-
+,
+  [
+    {"value":"103","country":"美国"},
+    {"value":"56","country":"日本"},
+    {"value":"15","country":"加拿大"},
+    {"value":"14","country":"新加坡"},
+    {"value":"14","country":"俄罗斯"},
+    {"value":"9","country":"泰国"},
+    {"value":"8","country":"法国"},
+    {"value":"7","country":"英国"},
+    {"value":"7","country":"澳大利亚"},
+    {"value":"7","country":"德国"},
+    {"value":"4","country":"印度"},
+    {"value":"3","country":"新西兰"},
+    {"value":"3","country":"巴西"},
+    {"value":"2","country":"韩国"},
+    {"value":"2","country":"印度尼西亚"},
+    {"value":"2","country":"比利时"},
+    {"value":"2","country":"波兰"},
+    {"value":"2","country":"荷兰"},
+    {"value":"1","country":"巴勒斯坦"},
+    {"value":"1","country":"土耳其"},
+    {"value":"1","country":"哥伦比亚"},
+    {"value":"1","country":"伊朗"},
+    {"value":"1","country":"伊拉克"},
+    {"value":"1","country":"菲律宾"},
+    {"value":"1","country":"西班牙"},
+    {"value":"1","country":"意大利"},
+    {"value":"1","country":"阿根廷"}
+  ]
 ]
